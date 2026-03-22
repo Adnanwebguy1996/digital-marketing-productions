@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,6 +203,7 @@
     padding: 60px;
     position: relative;
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    scroll-margin-top: 100px;
   }
   .form-container::before {
     content: '';
@@ -681,7 +681,7 @@
 <!-- ONBOARDING FORM -->
 <section id="onboarding">
   <div class="container">
-    <div class="form-container reveal">
+    <div class="form-container reveal" id="onboarding-form-container">
       <div class="hud-corner-form tl"></div>
       <div class="hud-corner-form tr"></div>
       <div class="hud-corner-form bl"></div>
@@ -764,7 +764,6 @@
         <div class="section-label">Portfolio</div>
         <h2 class="section-title">OUR<br>WORK</h2>
       </div>
-      <!-- Changed from "Start a Project →" to "Learn More →" and linked to ourwork.html -->
       <a class='btn-ghost' href='/ourwork'>Learn More →</a>
     </div>
     <div class="work-grid">
@@ -886,7 +885,7 @@
       <div class="section-label" style="justify-content:center">Let's Work Together</div>
       <h2 class="cta-title">READY TO<br><span>CREATE?</span></h2>
       <p class="cta-sub">Based in Marion &amp; Kokomo, Indiana — serving the entire state and beyond.</p>
-      <a href="#onboarding" class="btn-primary">Start Onboarding</a>
+      <a href="#onboarding-form-container" class="btn-primary">Start Onboarding</a>
       <div class="cta-contact">
         <a href="tel:7656187152" class="cta-pill">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3-8.63A2 2 0 012.18 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.1a16 16 0 006 6l1.46-1.45a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
