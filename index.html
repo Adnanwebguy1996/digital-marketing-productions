@@ -31,6 +31,55 @@
     background: var(--black); color: var(--white);
     font-family: var(--font-body); font-weight: 300;
     line-height: 1.6; overflow-x: hidden; cursor: none;
+    /* Disable text selection globally */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  /* Allow selection on form inputs only */
+  input, textarea, select, [contenteditable="true"] {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+  }
+
+  /* Disable image dragging */
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: auto;
+  }
+
+  /* Protection overlay notification */
+  .protection-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(27,158,158,0.95);
+    color: var(--black);
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 10000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    font-family: var(--font-body);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(46,200,200,0.3);
+    border-left: 3px solid var(--teal-glow);
+  }
+  .protection-toast.show {
+    transform: translateX(0);
   }
 
   /* CURSOR */
@@ -57,14 +106,15 @@
     background-image: url('https://images.stockcake.com/public/2/5/6/256e6d2f-e7c5-47a9-8b56-8e7c46fecf5e_large/cinematic-camera-operator-stockcake.jpg');
     background-size:cover;background-position:center;
     filter:brightness(0.28) saturate(0.7);
+    pointer-events: none;
   }
-  .hero-teal-overlay { position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,13,13,0.7) 0%,rgba(10,40,40,0.5) 50%,rgba(5,13,13,0.8) 100%); }
-  .hero-teal-cast { position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 30%,rgba(27,158,158,0.18) 0%,transparent 65%); }
-  .hero-grid { position:absolute;inset:0;opacity:.055;background-image:linear-gradient(var(--teal) 1px,transparent 1px),linear-gradient(90deg,var(--teal) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%); }
-  .scan-line { position:absolute;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(46,200,200,0.4),transparent);animation:scan 7s linear infinite;top:0; }
+  .hero-teal-overlay { position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,13,13,0.7) 0%,rgba(10,40,40,0.5) 50%,rgba(5,13,13,0.8) 100%);pointer-events: none; }
+  .hero-teal-cast { position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 30%,rgba(27,158,158,0.18) 0%,transparent 65%);pointer-events: none; }
+  .hero-grid { position:absolute;inset:0;opacity:.055;background-image:linear-gradient(var(--teal) 1px,transparent 1px),linear-gradient(90deg,var(--teal) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%);pointer-events: none; }
+  .scan-line { position:absolute;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(46,200,200,0.4),transparent);animation:scan 7s linear infinite;top:0;pointer-events: none; }
   @keyframes scan { from{top:0}to{top:100%} }
 
-  .hud-corner { position:absolute;width:56px;height:56px;opacity:.32;animation:hudPulse 3s ease-in-out infinite; }
+  .hud-corner { position:absolute;width:56px;height:56px;opacity:.32;animation:hudPulse 3s ease-in-out infinite;pointer-events: none; }
   .hud-corner svg { width:100%;height:100%; }
   .hud-tl{top:84px;left:60px} .hud-tr{top:84px;right:60px;transform:scaleX(-1)} .hud-bl{bottom:84px;left:60px;transform:scaleY(-1)} .hud-br{bottom:84px;right:60px;transform:scale(-1)}
   @keyframes hudPulse { 0%,100%{opacity:.22}50%{opacity:.5} }
@@ -120,17 +170,20 @@
     object-fit:cover;object-position:center;
     transition:transform .7s cubic-bezier(0.25,0.46,0.45,0.94),filter .4s;
     filter:brightness(0.55) saturate(0.75);
+    pointer-events: none;
   }
   .svc-img-card:hover img { transform:scale(1.07);filter:brightness(0.7) saturate(0.9); }
   .svc-img-card::before {
     content:'';position:absolute;inset:0;z-index:1;
     background:linear-gradient(to top,rgba(5,13,13,0.92) 0%,rgba(5,13,13,0.3) 55%,transparent 100%);
+    pointer-events: none;
   }
   /* Teal glow on hover */
   .svc-img-card::after {
     content:'';position:absolute;inset:0;z-index:1;
     background:radial-gradient(ellipse at 50% 80%,rgba(27,158,158,0.22) 0%,transparent 65%);
     opacity:0;transition:opacity .4s;
+    pointer-events: none;
   }
   .svc-img-card:hover::after { opacity:1; }
   /* Bottom border glow */
@@ -139,6 +192,7 @@
     background:linear-gradient(to right,var(--teal),var(--teal-light));
     transform:scaleX(0);transition:transform .4s ease;transform-origin:left;
     box-shadow:0 0 8px var(--teal);
+    pointer-events: none;
   }
   .svc-img-card:hover .card-line { transform:scaleX(1); }
   .svc-img-card .card-content {
@@ -152,6 +206,7 @@
     position:absolute;top:14px;left:14px;width:22px;height:22px;
     border-top:1px solid rgba(46,200,200,0.45);border-left:1px solid rgba(46,200,200,0.45);
     z-index:3;opacity:.5;transition:opacity .3s;
+    pointer-events: none;
   }
   .svc-img-card:hover .hud-tl-sm { opacity:1; }
 
@@ -173,9 +228,10 @@
     width:100%;height:100%;object-fit:cover;
     filter:brightness(0.45) saturate(0.65) hue-rotate(-10deg);
     transition:filter .4s,transform .5s;
+    pointer-events: none;
   }
   .service-strip-item:hover .strip-thumb img { filter:brightness(0.65) saturate(0.85);transform:scale(1.05); }
-  .strip-thumb::after { content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--offblack) 0%,transparent 55%); }
+  .strip-thumb::after { content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--offblack) 0%,transparent 55%);pointer-events: none; }
   .strip-num { font-family:var(--font-display);font-size:1.6rem;color:rgba(27,158,158,0.18);margin-bottom:8px; }
   .service-strip-item h4 { font-family:var(--font-display);font-size:1.05rem;letter-spacing:.06em;color:var(--teal-light);margin-bottom:5px; }
   .service-strip-item p { font-size:.76rem;color:var(--muted);line-height:1.6; }
@@ -347,6 +403,7 @@
     width: 40px;
     height: 40px;
     z-index: 3;
+    pointer-events: none;
   }
   .hud-corner-form.tl {
     top: 20px;
@@ -390,12 +447,13 @@
     object-fit:cover;object-position:center;
     filter:brightness(0.45) saturate(0.7);
     transition:transform .7s cubic-bezier(0.25,0.46,0.45,0.94),filter .4s;
+    pointer-events: none;
   }
   .work-item:hover img { transform:scale(1.06);filter:brightness(0.6) saturate(0.85); }
-  .work-item::before { content:'';position:absolute;top:14px;left:14px;width:24px;height:24px;border-top:1px solid rgba(46,200,200,0.5);border-left:1px solid rgba(46,200,200,0.5);z-index:3;opacity:.4;transition:opacity .3s; }
-  .work-item::after  { content:'';position:absolute;bottom:14px;right:14px;width:24px;height:24px;border-bottom:1px solid rgba(46,200,200,0.5);border-right:1px solid rgba(46,200,200,0.5);z-index:3;opacity:.4;transition:opacity .3s; }
+  .work-item::before { content:'';position:absolute;top:14px;left:14px;width:24px;height:24px;border-top:1px solid rgba(46,200,200,0.5);border-left:1px solid rgba(46,200,200,0.5);z-index:3;opacity:.4;transition:opacity .3s;pointer-events: none; }
+  .work-item::after  { content:'';position:absolute;bottom:14px;right:14px;width:24px;height:24px;border-bottom:1px solid rgba(46,200,200,0.5);border-right:1px solid rgba(46,200,200,0.5);z-index:3;opacity:.4;transition:opacity .3s;pointer-events: none; }
   .work-item:hover::before,.work-item:hover::after { opacity:1; }
-  .work-item-teal { position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(27,158,158,0.18) 0%,transparent 65%);opacity:0;transition:opacity .4s;z-index:1; }
+  .work-item-teal { position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(27,158,158,0.18) 0%,transparent 65%);opacity:0;transition:opacity .4s;z-index:1;pointer-events: none; }
   .work-item:hover .work-item-teal { opacity:1; }
   .work-item-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(5,13,13,0.9) 0%,transparent 52%);display:flex;flex-direction:column;justify-content:flex-end;padding:32px;z-index:2; }
   .work-item-label { font-size:.64rem;letter-spacing:.28em;text-transform:uppercase;color:var(--teal-light);margin-bottom:7px; }
@@ -410,11 +468,11 @@
     position:relative;aspect-ratio:4/5;overflow:hidden;
     border:1px solid var(--teal-border);
   }
-  .about-img-wrap img { width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.7); }
-  .about-img-wrap::before { content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(27,158,158,0.15) 0%,transparent 60%);z-index:1; }
+  .about-img-wrap img { width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.7);pointer-events: none; }
+  .about-img-wrap::before { content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(27,158,158,0.15) 0%,transparent 60%);z-index:1;pointer-events: none; }
   .about-inner-frame { position:absolute;top:18px;left:18px;right:18px;bottom:18px;border:1px solid var(--teal-border);z-index:2;pointer-events:none; }
   .about-inner-frame::after { content:'DMP';position:absolute;bottom:16px;right:16px;font-family:var(--font-display);font-size:4rem;color:rgba(27,158,158,0.1);letter-spacing:.08em; }
-  .about-badge { position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:var(--teal-light);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 30px rgba(46,200,200,0.4);z-index:3; }
+  .about-badge { position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:var(--teal-light);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 30px rgba(46,200,200,0.4);z-index:3;pointer-events: none; }
   .about-badge strong { font-family:var(--font-display);font-size:2rem;color:var(--black);line-height:1; }
   .about-badge span { font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);opacity:.8;text-align:center; }
   .about-content { padding-right:10px; }
@@ -427,7 +485,7 @@
   #process { background:var(--black); }
   .process-header { margin-bottom:76px; }
   .process-steps { display:grid;grid-template-columns:repeat(5,1fr);position:relative; }
-  .process-steps::before { content:'';position:absolute;top:27px;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--teal-border),var(--teal-border),transparent); }
+  .process-steps::before { content:'';position:absolute;top:27px;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--teal-border),var(--teal-border),transparent);pointer-events: none; }
   .process-step { padding:0 18px 0 0;position:relative; }
   .step-dot { width:54px;height:54px;border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;margin-bottom:28px;background:var(--black);position:relative;z-index:1;transition:background .3s,box-shadow .3s; }
   .process-step:hover .step-dot { background:var(--teal-dim);box-shadow:0 0 16px rgba(27,158,158,0.3); }
@@ -445,9 +503,9 @@
   /* ── CTA ── */
   #cta { background:var(--black); }
   .cta-inner { position:relative;text-align:center;padding:96px 40px;border:1px solid var(--teal-border);overflow:hidden; }
-  .cta-inner::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 50% 50%,rgba(27,158,158,0.08) 0%,transparent 70%); }
-  .cta-inner::after { content:'';position:absolute;top:16px;left:16px;width:36px;height:36px;border-top:1px solid var(--teal-border);border-left:1px solid var(--teal-border); }
-  .cta-hud-br { position:absolute;bottom:16px;right:16px;width:36px;height:36px;border-bottom:1px solid var(--teal-border);border-right:1px solid var(--teal-border); }
+  .cta-inner::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 50% 50%,rgba(27,158,158,0.08) 0%,transparent 70%);pointer-events: none; }
+  .cta-inner::after { content:'';position:absolute;top:16px;left:16px;width:36px;height:36px;border-top:1px solid var(--teal-border);border-left:1px solid var(--teal-border);pointer-events: none; }
+  .cta-hud-br { position:absolute;bottom:16px;right:16px;width:36px;height:36px;border-bottom:1px solid var(--teal-border);border-right:1px solid var(--teal-border);pointer-events: none; }
   .cta-title { font-family:var(--font-display);font-size:clamp(3.2rem,7vw,8rem);line-height:.9;margin-bottom:26px;position:relative; }
   .cta-title span { color:var(--teal-light);text-shadow:0 0 40px rgba(46,200,200,0.4); }
   .cta-sub { color:var(--muted);font-size:.97rem;margin-bottom:46px;position:relative; }
@@ -508,6 +566,9 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
+<!-- Protection Toast Notification -->
+<div class="protection-toast" id="protectionToast">⚠️ Content protection enabled</div>
+
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo"><span class="logo-dmp">DMP</span><span class="logo-dot">◆</span></a>
@@ -518,7 +579,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#process">Process</a></li>
   </ul>
-  <a href="tel:7656187152" class="nav-cta">765-618-7152</a>
+  <a href="tel:+17656187152" class="nav-cta">+1 765-618-7152</a>
 </nav>
 
 <!-- HERO -->
@@ -539,7 +600,7 @@
     <p class="hero-subtitle">Photography · Videography · Drone · Content Creation</p>
     <div class="hero-actions">
       <a href="#services" class="btn-primary">Our Services</a>
-      <a href="tel:7656187152" class="btn-ghost">Call 765-618-7152</a>
+      <a href="tel:+17656187152" class="btn-ghost">Call +1 765-618-7152</a>
     </div>
   </div>
   <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
@@ -705,7 +766,7 @@
           </div>
           <div class="form-field">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="(765) 618-7152">
+            <input type="tel" id="phone" name="phone" placeholder="+1 765-618-7152">
           </div>
           <div class="form-field">
             <label for="location">Location</label>
@@ -764,7 +825,7 @@
         <div class="section-label">Portfolio</div>
         <h2 class="section-title">OUR<br>WORK</h2>
       </div>
-      <a class='btn-ghost' href='/ourwork'>Learn More →</a>
+      <a class='btn-ghost' href='#work'>Learn More →</a>
     </div>
     <div class="work-grid">
       <!-- Large left -->
@@ -887,9 +948,9 @@
       <p class="cta-sub">Based in Marion &amp; Kokomo, Indiana — serving the entire state and beyond.</p>
       <a href="#onboarding-form-container" class="btn-primary">Start Onboarding</a>
       <div class="cta-contact">
-        <a href="tel:7656187152" class="cta-pill">
+        <a href="tel:+17656187152" class="cta-pill">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3-8.63A2 2 0 012.18 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.1a16 16 0 006 6l1.46-1.45a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-          765-618-7152
+          +1 765-618-7152
         </a>
         <a href="#" class="cta-pill">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -936,7 +997,7 @@
         <h5>Contact</h5>
         <address>
           Marion, IN, US<br>Kokomo, IN, US<br><br>
-          <a href="tel:7656187152">765-618-7152</a><br>
+          <a href="tel:+17656187152">+1 765-618-7152</a><br>
           <a href="mailto:Digitalmarketingproductions@gmail.com">Digitalmarketingproductions@gmail.com</a>
         </address>
       </div>
@@ -954,6 +1015,137 @@
     emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
   })();
 
+  // ============================================
+  // CONTENT PROTECTION SYSTEM
+  // ============================================
+  
+  const toast = document.getElementById('protectionToast');
+  
+  function showProtectionToast(message = '⚠️ Content protection enabled') {
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+  
+  // 1. Disable right-click (context menu)
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    showProtectionToast('🔒 Right-click disabled');
+    return false;
+  });
+  
+  // 2. Disable keyboard shortcuts for copy/paste/save
+  document.addEventListener('keydown', function(e) {
+    // Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+S, Ctrl+P, F12, Ctrl+Shift+I, Ctrl+U
+    if (
+      (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 's' || e.key === 'p' || e.key === 'u')) ||
+      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c')) ||
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && e.key === 'J')
+    ) {
+      e.preventDefault();
+      showProtectionToast('🔒 Keyboard shortcuts disabled');
+      return false;
+    }
+    
+    // Disable print screen (not fully reliable but helps)
+    if (e.key === 'PrintScreen') {
+      e.preventDefault();
+      showProtectionToast('🔒 Print screen disabled');
+      return false;
+    }
+  });
+  
+  // 3. Disable drag and drop of images
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      showProtectionToast('🔒 Image saving disabled');
+      return false;
+    });
+  });
+  
+  // 4. Disable text selection via mouse (except form inputs)
+  document.addEventListener('selectstart', function(e) {
+    if (!e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('[contenteditable="true"]')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+  // 5. Disable copy event for non-form elements
+  document.addEventListener('copy', function(e) {
+    if (!e.target.closest('input') && !e.target.closest('textarea')) {
+      e.preventDefault();
+      showProtectionToast('📋 Copying disabled');
+      return false;
+    }
+  });
+  
+  // 6. Disable cut event
+  document.addEventListener('cut', function(e) {
+    if (!e.target.closest('input') && !e.target.closest('textarea')) {
+      e.preventDefault();
+      showProtectionToast('✂️ Cut disabled');
+      return false;
+    }
+  });
+  
+  // 7. Disable paste on non-form elements (optional - can be enabled if needed)
+  document.addEventListener('paste', function(e) {
+    if (!e.target.closest('input') && !e.target.closest('textarea')) {
+      e.preventDefault();
+      showProtectionToast('📋 Paste disabled outside forms');
+      return false;
+    }
+  });
+  
+  // 8. Disable image saving via context menu on images
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      showProtectionToast('🔒 Image saving disabled');
+      return false;
+    });
+  });
+  
+  // 9. Warn on DevTools open (optional detection)
+  let devtoolsOpen = false;
+  const devtoolsCheck = () => {
+    const threshold = 160;
+    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+    if (widthThreshold || heightThreshold) {
+      if (!devtoolsOpen) {
+        devtoolsOpen = true;
+        showProtectionToast('🔧 DevTools detected - content protected');
+      }
+    } else {
+      devtoolsOpen = false;
+    }
+  };
+  setInterval(devtoolsCheck, 1000);
+  
+  // 10. Disable F5 and Ctrl+R (refresh) - optional, uncomment if needed
+  // document.addEventListener('keydown', function(e) {
+  //   if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+  //     e.preventDefault();
+  //     showProtectionToast('🔄 Refresh disabled');
+  //     return false;
+  //   }
+  // });
+  
+  // Initial toast on page load
+  setTimeout(() => {
+    showProtectionToast('🔒 Content protection active');
+  }, 1000);
+  
+  // ============================================
+  // END CONTENT PROTECTION
+  // ============================================
+  
   // Cursor logic
   const cursor = document.getElementById('cursor');
   const ring   = document.getElementById('cursorRing');
@@ -966,22 +1158,22 @@
     el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
     el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
   });
-
+  
   // Nav scroll effect
   const nav=document.getElementById('nav');
   window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
-
+  
   // Reveal animations
   const io=new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
   },{threshold:.1});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
+  
   // Form submission with EmailJS
   const form = document.getElementById('onboarding-form');
   const formStatus = document.getElementById('form-status');
   const submitBtn = document.getElementById('form-submit-btn');
-
+  
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -996,12 +1188,20 @@
       formStatus.style.color = 'var(--teal-light)';
       return;
     }
-
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      formStatus.textContent = 'Please enter a valid email address.';
+      formStatus.style.color = 'var(--teal-light)';
+      return;
+    }
+    
     // Disable button and show sending status
     submitBtn.disabled = true;
     submitBtn.textContent = 'SENDING...';
     formStatus.textContent = 'Sending your onboarding info...';
-
+    
     // Prepare template parameters
     const templateParams = {
       from_name: name,
@@ -1014,7 +1214,7 @@
       timeline: document.getElementById('timeline').value,
       to_email: 'Digitalmarketingproductions@gmail.com'
     };
-
+    
     // Send email using EmailJS
     // Replace with your actual Service ID and Template ID
     emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
@@ -1026,13 +1226,12 @@
         submitBtn.disabled = false;
         submitBtn.textContent = 'SUBMIT ONBOARDING';
         
-        // Optional: clear status after 5 seconds
         setTimeout(() => {
           formStatus.textContent = '';
         }, 5000);
       }, function(error) {
         console.log('FAILED...', error);
-        formStatus.textContent = 'Something went wrong. Please try again or call 765-618-7152.';
+        formStatus.textContent = 'Something went wrong. Please try again or call +1 765-618-7152.';
         formStatus.style.color = 'var(--teal-light)';
         submitBtn.disabled = false;
         submitBtn.textContent = 'SUBMIT ONBOARDING';
