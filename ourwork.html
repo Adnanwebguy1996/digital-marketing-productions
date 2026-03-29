@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +43,56 @@
             font-weight: 300;
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: none; /* Custom cursor like main site */
+            cursor: none;
+            /* Disable text selection globally */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Allow selection on form inputs only (though no forms on this page, keeping for consistency) */
+        input, textarea, select, [contenteditable="true"] {
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        /* Disable image dragging */
+        img, video {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            pointer-events: auto;
+        }
+
+        /* Protection toast notification */
+        .protection-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(27,158,158,0.95);
+            color: var(--black);
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            z-index: 10001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+            font-family: var(--font-body);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(46,200,200,0.3);
+            border-left: 3px solid var(--teal-glow);
+        }
+        .protection-toast.show {
+            transform: translateX(0);
         }
 
         /* ===== CUSTOM CURSOR (EXACT MATCH) ===== */
@@ -180,12 +228,14 @@
             background-size: cover;
             background-position: center;
             filter: brightness(0.28) saturate(0.7);
+            pointer-events: none;
         }
 
         .hero-teal-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(135deg, rgba(5,13,13,0.7) 0%, rgba(10,40,40,0.5) 50%, rgba(5,13,13,0.8) 100%);
+            pointer-events: none;
         }
 
         .hero-grid {
@@ -195,6 +245,7 @@
             background-image: linear-gradient(var(--teal) 1px, transparent 1px), linear-gradient(90deg, var(--teal) 1px, transparent 1px);
             background-size: 80px 80px;
             mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+            pointer-events: none;
         }
 
         .hero-content {
@@ -352,6 +403,7 @@
             z-index: 3;
             opacity: 0;
             transition: opacity .3s;
+            pointer-events: none;
         }
 
         .gallery-item::after {
@@ -366,6 +418,7 @@
             z-index: 3;
             opacity: 0;
             transition: opacity .3s;
+            pointer-events: none;
         }
 
         .gallery-item:hover::before,
@@ -788,6 +841,9 @@
 </head>
 <body>
 
+    <!-- Protection Toast Notification -->
+    <div class="protection-toast" id="protectionToast">⚠️ Content protection enabled</div>
+
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
@@ -802,7 +858,7 @@
             <li><a class='active' href='/ourwork'>Work</a></li>
             <li><a href='/#about'>About</a></li>
         </ul>
-        <a href="tel:7656187152" class="nav-cta">765-618-7152</a>
+        <a href="tel:+17656187152" class="nav-cta">+1 765-618-7152</a>
     </nav>
 
     <!-- Hero Section -->
@@ -880,7 +936,7 @@
                 <h5>Contact</h5>
                 <address>
                     Marion, IN<br>Kokomo, IN<br><br>
-                    <a href="tel:7656187152">765-618-7152</a><br>
+                    <a href="tel:+17656187152">+1 765-618-7152</a><br>
                     <a href="mailto:Digitalmarketingproductions@gmail.com">Email Us</a>
                 </address>
             </div>
@@ -905,6 +961,127 @@
     </div>
 
     <script>
+        // ============================================
+        // CONTENT PROTECTION SYSTEM
+        // ============================================
+        
+        const toast = document.getElementById('protectionToast');
+        
+        function showProtectionToast(message = '⚠️ Content protection enabled') {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 1. Disable right-click (context menu)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showProtectionToast('🔒 Right-click disabled');
+            return false;
+        });
+        
+        // 2. Disable keyboard shortcuts for copy/paste/save/inspect
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+S, Ctrl+P, F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+J
+            if (
+                (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 's' || e.key === 'p' || e.key === 'u')) ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c' || e.key === 'J' || e.key === 'j')) ||
+                e.key === 'F12'
+            ) {
+                e.preventDefault();
+                showProtectionToast('🔒 Keyboard shortcuts disabled');
+                return false;
+            }
+            
+            // Disable print screen
+            if (e.key === 'PrintScreen') {
+                e.preventDefault();
+                showProtectionToast('🔒 Print screen disabled');
+                return false;
+            }
+        });
+        
+        // 3. Disable drag and drop of images/videos
+        document.querySelectorAll('img, video').forEach(media => {
+            media.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+                showProtectionToast('🔒 Media saving disabled');
+                return false;
+            });
+        });
+        
+        // 4. Disable text selection via mouse (except form inputs - though none on this page)
+        document.addEventListener('selectstart', function(e) {
+            if (!e.target.closest('input') && !e.target.closest('textarea') && !e.target.closest('[contenteditable="true"]')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // 5. Disable copy event for non-form elements
+        document.addEventListener('copy', function(e) {
+            if (!e.target.closest('input') && !e.target.closest('textarea')) {
+                e.preventDefault();
+                showProtectionToast('📋 Copying disabled');
+                return false;
+            }
+        });
+        
+        // 6. Disable cut event
+        document.addEventListener('cut', function(e) {
+            if (!e.target.closest('input') && !e.target.closest('textarea')) {
+                e.preventDefault();
+                showProtectionToast('✂️ Cut disabled');
+                return false;
+            }
+        });
+        
+        // 7. Disable paste on non-form elements
+        document.addEventListener('paste', function(e) {
+            if (!e.target.closest('input') && !e.target.closest('textarea')) {
+                e.preventDefault();
+                showProtectionToast('📋 Paste disabled');
+                return false;
+            }
+        });
+        
+        // 8. Disable media saving via context menu
+        document.querySelectorAll('img, video').forEach(media => {
+            media.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                showProtectionToast('🔒 Media saving disabled');
+                return false;
+            });
+        });
+        
+        // 9. Warn on DevTools open detection
+        let devtoolsOpen = false;
+        const devtoolsCheck = () => {
+            const threshold = 160;
+            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+            if (widthThreshold || heightThreshold) {
+                if (!devtoolsOpen) {
+                    devtoolsOpen = true;
+                    showProtectionToast('🔧 DevTools detected - content protected');
+                }
+            } else {
+                devtoolsOpen = false;
+            }
+        };
+        setInterval(devtoolsCheck, 1000);
+        
+        // Initial toast on page load
+        setTimeout(() => {
+            showProtectionToast('🔒 Content protection active');
+        }, 1000);
+        
+        // ============================================
+        // END CONTENT PROTECTION
+        // ============================================
+        
         // WordPress Media API - Completely hidden from users
         const API_URL = 'https://dev-demo-site-2014.pantheonsite.io/wp-json/wp/v2/media?per_page=100';
 
